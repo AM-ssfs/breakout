@@ -1,5 +1,6 @@
 import pygame, sys
 from pygame.locals import *
+import brick
 
 # Constants that will be used in the program
 APPLICATION_WIDTH = 400
@@ -32,6 +33,14 @@ mainsurface.fill((255, 255, 255))
 # Step 1: Use loops to draw the rows of bricks. The top row of bricks should be 70 pixels away from the top of
 # the screen (BRICK_Y_OFFSET)
 
+x_pos = BRICK_SEP
+y_pos = BRICK_Y_OFFSET
+for x in range(BRICKS_PER_ROW):
+    b = brick.Brick(BRICK_WIDTH, BRICK_HEIGHT, RED)
+    b.rect.y = x_pos
+    b.rect.y = y_pos
+    mainsurface.blit(b.image, b.rect)
+
 
 
 while True:
@@ -39,6 +48,8 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+    pygame.display.update()
+
 
 
 
