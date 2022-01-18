@@ -25,8 +25,8 @@ class Ball(pygame.sprite.Sprite):
         self.window_width = windowWidth
         self.window_height = windowHeight
 
-    speed_x = 2
-    speed_y = 5
+    speed_x = 1
+    speed_y = 1.5
 
     def move(self):
         if self.rect.x > self.window_width-10:

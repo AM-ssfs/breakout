@@ -40,12 +40,12 @@ Paddle = pygame.sprite.Group()
 p = paddle.Paddle(PADDLE_WIDTH, PADDLE_HEIGHT, BLACK)
 Paddle.add(p)
 p.rect.x = (APPLICATION_WIDTH/2 - PADDLE_WIDTH/2)
-p.rect.y = APPLICATION_HEIGHT - PADDLE_Y_OFFSET
+p.rect.y = APPLICATION_HEIGHT - PADDLE_Y_OFFSET*4
 mainsurface.blit(p.image, p.rect)
 
 white_p = paddle.Paddle(PADDLE_WIDTH, PADDLE_HEIGHT, WHITE)
-white_p.rect.x = (APPLICATION_WIDTH/2 - PADDLE_WIDTH/2)
-white_p.rect.y = APPLICATION_HEIGHT - PADDLE_Y_OFFSET
+white_p.rect.x = p.rect.x
+white_p.rect.y = p.rect.y
 
 
 Bricks = pygame.sprite.Group()
@@ -74,7 +74,7 @@ def ten_rows():
 ten_rows()
 
 
-w_bal = ball.Ball(WHITE, APPLICATION_WIDTH, APPLICATION_HEIGHT, 10)
+w_bal = ball.Ball(RED, APPLICATION_WIDTH, APPLICATION_HEIGHT, 10)
 w_bal.rect.x = (APPLICATION_WIDTH-10)/2
 w_bal.rect.y = APPLICATION_HEIGHT/2
 mainsurface.blit(w_bal.image, w_bal.rect)
@@ -85,6 +85,9 @@ bal.rect.y = w_bal.rect.y
 mainsurface.blit(bal.image, bal.rect)
 
 while True:
+    mainsurface.fill(WHITE)
+    mainsurface.blit(p.image, p.rect)
+
     for event in pygame.event.get():
         if event.type == MOUSEMOTION:
             mainsurface.blit(white_p.image, white_p.rect)
@@ -95,7 +98,6 @@ while True:
             pygame.quit()
             sys.exit()
 
-
     mainsurface.blit(w_bal.image, w_bal.rect)
     bal.move()
     bal.collide_brick(Bricks)
@@ -103,7 +105,7 @@ while True:
     mainsurface.blit(bal.image, bal.rect)
     w_bal.rect.x = bal.rect.x
     w_bal.rect.y = bal.rect.y
-
+    Bricks.draw(mainsurface)
 
     pygame.display.update()
 
