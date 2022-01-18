@@ -12,7 +12,7 @@ class Paddle(pygame.sprite.Sprite):
         self.color = color
 
         # Create a surface with the correct height and width
-        self.image = pygame.surface((self.width, self.height))
+        self.image = pygame.Surface((self.width, self.height))
 
         # Get the rect coordinates
         self.rect = self.image.get_rect()
@@ -20,6 +20,7 @@ class Paddle(pygame.sprite.Sprite):
         # Fill the surface with the correct color
         self.image.fill(self.color)
 
-    def move(self):
-        pass
+    def move(self, mouse_x):
+        self.rect.x = mouse_x[0] - 30
+
 

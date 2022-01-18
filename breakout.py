@@ -1,6 +1,9 @@
 import pygame, sys
 from pygame.locals import *
 import brick
+import paddle
+import ball
+
 
 # Constants that will be used in the program
 APPLICATION_WIDTH = 400
@@ -33,21 +36,73 @@ mainsurface.fill((255, 255, 255))
 # Step 1: Use loops to draw the rows of bricks. The top row of bricks should be 70 pixels away from the top of
 # the screen (BRICK_Y_OFFSET)
 
-x_pos = BRICK_SEP
-y_pos = BRICK_Y_OFFSET
-for x in range(BRICKS_PER_ROW):
-    b = brick.Brick(BRICK_WIDTH, BRICK_HEIGHT, RED)
-    b.rect.y = x_pos
-    b.rect.y = y_pos
-    mainsurface.blit(b.image, b.rect)
+p = paddle.Paddle(PADDLE_WIDTH, PADDLE_HEIGHT, BLACK)
+p.rect.x = (APPLICATION_WIDTH/2 - PADDLE_WIDTH/2)
+p.rect.y = APPLICATION_HEIGHT - PADDLE_Y_OFFSET
+mainsurface.blit(p.image, p.rect)
+
+white_p = paddle.Paddle(PADDLE_WIDTH, PADDLE_HEIGHT, WHITE)
+white_p.rect.x = (APPLICATION_WIDTH/2 - PADDLE_WIDTH/2)
+white_p.rect.y = APPLICATION_HEIGHT - PADDLE_Y_OFFSET
 
 
+Bricks = pygame.sprite.Group()
+
+def row(color, row_num):
+    x_pos = BRICK_SEP
+    y_pos = BRICK_Y_OFFSET + ( row_num * 12)
+    for x in range(BRICKS_PER_ROW):
+        b = brick.Brick(BRICK_WIDTH, BRICK_HEIGHT, color)
+        Bricks.add(b)
+        b.rect.x = x_pos
+        b.rect.y = y_pos
+        mainsurface.blit(b.image, b.rect)
+        x_pos += (BRICK_SEP + BRICK_WIDTH)
+
+def two_rows(color, count):
+    row(color, count + 1)
+    row(color, count + 2)
+
+def ten_rows():
+    colors = [RED, ORANGE, YELLOW, GREEN, CYAN]
+    for x in range (5):
+        count = x * 2
+        two_rows(colors[x], count)
+
+ten_rows()
+
+
+w_bal = ball.Ball(RED, APPLICATION_WIDTH, APPLICATION_HEIGHT, 10)
+w_bal.rect.x = (APPLICATION_WIDTH-10)/2
+w_bal.rect.y = APPLICATION_HEIGHT/2
+mainsurface.blit(w_bal.image, w_bal.rect)
+
+bal = ball.Ball(BLACK, APPLICATION_WIDTH, APPLICATION_HEIGHT, 10)
+bal.rect.x = w_bal.rect.x
+bal.rect.y = w_bal.rect.y
+mainsurface.blit(bal.image, bal.rect)
 
 while True:
     for event in pygame.event.get():
+        if event.type == MOUSEMOTION:
+            mainsurface.blit(white_p.image, white_p.rect)
+            p.move(pygame.mouse.get_pos())
+            mainsurface.blit(p.image, p.rect)
+            white_p.move(pygame.mouse.get_pos())
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+
+
+    mainsurface.blit(w_bal.image, w_bal.rect)
+    bal.move()
+    bal.collide_brick(Bricks)
+#    bal.collide_paddle(paddle)
+    mainsurface.blit(bal.image, bal.rect)
+    w_bal.rect.x = bal.rect.x
+    w_bal.rect.y = bal.rect.y
+
+
     pygame.display.update()
 
 
