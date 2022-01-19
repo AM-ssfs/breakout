@@ -1,5 +1,5 @@
 import pygame
-
+import random
 
 
 class Ball(pygame.sprite.Sprite):
@@ -25,9 +25,8 @@ class Ball(pygame.sprite.Sprite):
         self.window_width = windowWidth
         self.window_height = windowHeight
 
-    speed_x = 1
-    speed_y = 1.5
-
+    speed_x = 1.5
+    speed_y = 2.5
     def move(self):
         if self.rect.x > self.window_width-10:
             self.speed_x = -self.speed_x
@@ -45,6 +44,14 @@ class Ball(pygame.sprite.Sprite):
         if pygame.sprite.spritecollide(self, bricks, True):
             self.speed_y = -self.speed_y
 
+            if self.speed_y < 4 and self.speed_y > -4:
+                self.speed_y += .2
+
+            if self.speed_y < 6 and self.speed_y > 4:
+                self.speed_y += .1
+
     def collide_paddle(self, paddle):
         if pygame.sprite.spritecollide(self, paddle, False):
             self.speed_y = -self.speed_y
+
+

@@ -43,9 +43,9 @@ p.rect.x = (APPLICATION_WIDTH/2 - PADDLE_WIDTH/2)
 p.rect.y = APPLICATION_HEIGHT - PADDLE_Y_OFFSET*4
 mainsurface.blit(p.image, p.rect)
 
-white_p = paddle.Paddle(PADDLE_WIDTH, PADDLE_HEIGHT, WHITE)
-white_p.rect.x = p.rect.x
-white_p.rect.y = p.rect.y
+#white_p = paddle.Paddle(PADDLE_WIDTH, PADDLE_HEIGHT, WHITE)
+#white_p.rect.x = p.rect.x
+#white_p.rect.y = p.rect.y
 
 
 Bricks = pygame.sprite.Group()
@@ -73,16 +73,17 @@ def ten_rows():
 
 ten_rows()
 
-
-w_bal = ball.Ball(RED, APPLICATION_WIDTH, APPLICATION_HEIGHT, 10)
-w_bal.rect.x = (APPLICATION_WIDTH-10)/2
-w_bal.rect.y = APPLICATION_HEIGHT/2
-mainsurface.blit(w_bal.image, w_bal.rect)
-
 bal = ball.Ball(BLACK, APPLICATION_WIDTH, APPLICATION_HEIGHT, 10)
-bal.rect.x = w_bal.rect.x
-bal.rect.y = w_bal.rect.y
+bal.rect.x = (APPLICATION_WIDTH-10)/2
+bal.rect.y = APPLICATION_HEIGHT/2
 mainsurface.blit(bal.image, bal.rect)
+
+#w_bal = ball.Ball(RED, APPLICATION_WIDTH, APPLICATION_HEIGHT, 10)
+#w_bal.rect.x = w_bal.rect.x
+#bal.rect.y = w_bal.rect.y
+#mainsurface.blit(w_bal.image, w_bal.rect)
+
+
 
 while True:
     mainsurface.fill(WHITE)
@@ -90,25 +91,28 @@ while True:
 
     for event in pygame.event.get():
         if event.type == MOUSEMOTION:
-            mainsurface.blit(white_p.image, white_p.rect)
+            #mainsurface.blit(white_p.image, white_p.rect)
             p.move(pygame.mouse.get_pos())
             mainsurface.blit(p.image, p.rect)
-            white_p.move(pygame.mouse.get_pos())
+            #white_p.move(pygame.mouse.get_pos())
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
 
-    mainsurface.blit(w_bal.image, w_bal.rect)
+    if bal.rect.y > APPLICATION_HEIGHT-10:
+        print("lose")  # lose screen
+    if len(Bricks) <= 0:
+        print("win")  # win screen
+
+    #mainsurface.blit(w_bal.image, w_bal.rect)
     bal.move()
     bal.collide_brick(Bricks)
     bal.collide_paddle(Paddle)
     mainsurface.blit(bal.image, bal.rect)
-    w_bal.rect.x = bal.rect.x
-    w_bal.rect.y = bal.rect.y
+    #w_bal.rect.x = bal.rect.x
+    #w_bal.rect.y = bal.rect.y
     Bricks.draw(mainsurface)
 
     pygame.display.update()
-
-
 
 
